@@ -3,7 +3,7 @@ Contributors: wickedplugins
 Tags: folders, administration, tree view, content management, page organization, custom post type organization, media library folders, media library categories, media library organization
 Requires at least: 4.6
 Tested up to: 6.6
-Stable tag: 3.0.5
+Stable tag: 3.0.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,7 @@ Organize your WordPress media library, users, plugins, and more using folders wi
 * Gravity Forms entries and forms
 * WooCommerce products, orders, and coupons
 * Restrict Content Pro memberships and customers
+* Everest Forms
 * TablePress tables
 
 [Learn more about Wicked Folders Pro](https://wickedplugins.com/plugins/wicked-folders/?utm_source=readme&utm_campaign=wicked_folders&utm_content=pro_learn_more_link).
@@ -142,6 +143,11 @@ The folder toggle arrow is greyed out when a folder doesn't have any child folde
 6. Pro feature: folder permissions
 
 == Changelog ==
+
+= 3.0.6 (September 24, 2024) =
+* New: add support for Everest Forms (Wicked Folders Pro)
+* Fix: folder names wrapping instead of truncating in media modals opened from WooCommerce products (Wicked Folders Pro)
+* Fix: folder pane erroneously appearing on WooCommerce Attributes and Reviews screens
 
 = 3.0.5 (July 18, 2024) =
 * Fix: fatal error caused when a taxonomy query contains a relation key

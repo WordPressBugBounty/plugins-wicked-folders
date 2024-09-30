@@ -427,6 +427,9 @@ final class Admin {
 		// Only enable folder pane on certain pages
 		if ( ! in_array( $page, $allowed_pages ) ) $enabled = false;
 
+		// Don't enable on WooCommerce Attributes or Reviews pages
+		if ( 'product' == $type && isset( $_GET['page'] ) ) $enabled = false;
+
 		$enabled = apply_filters( 'wicked_folders_enable_object_folder_pane', $enabled );
 
 		if ( ! $enabled ) return false;
