@@ -3,7 +3,7 @@ Contributors: wickedplugins
 Tags: folders, administration, tree view, content management, page organization, custom post type organization, media library folders, media library categories, media library organization
 Requires at least: 4.6
 Tested up to: 6.6
-Stable tag: 3.0.6
+Stable tag: 3.0.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -144,7 +144,10 @@ The folder toggle arrow is greyed out when a folder doesn't have any child folde
 
 == Changelog ==
 
-= 3.0.6 (September 24, 2024) =
+= 3.0.7 (October 23, 2024) =
+* Fix: folders not sorted correctly after adding new folder
+
+= 3.0.6 (September 25, 2024) =
 * New: add support for Everest Forms (Wicked Folders Pro)
 * Fix: folder names wrapping instead of truncating in media modals opened from WooCommerce products (Wicked Folders Pro)
 * Fix: folder pane erroneously appearing on WooCommerce Attributes and Reviews screens
