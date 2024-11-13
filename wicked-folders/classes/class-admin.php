@@ -296,7 +296,12 @@ final class Admin {
 			wp_enqueue_style( 'wicked-folders-admin' );
 		}
 
-		$done = true;
+		// Allow this function to run again if the buffer contains a ACF WYSIWYG field;
+		// otherwise the scripts won't be enqueued in some cases (such as when a block
+		// renders an ACF WYSIWYG field with media buttons inside the block editor).
+		if ( ! $this->output_buffer_contains_acf_wysiwyg_field() ) {
+			$done = true;
+		}
 	}
 
 	public function wp_enqueue_media() {
@@ -1139,6 +1144,22 @@ final class Admin {
 		}
 
 		return $term_links;
+	}
+
+	/**
+	 * Checks the output buffer for the presesnce of an ACF WYSIWYG field
+	 * and returns true if found, false otherwise.
+	 */
+	public function output_buffer_contains_acf_wysiwyg_field() {
+		if ( true === apply_filters( 'wicked_folders_enable_output_buffer_check', true ) ) {
+			$buffer = ob_get_contents();
+
+			if ( false !== strpos( $buffer, 'acf-field-wysiwyg' ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private function sort_post_types_compare( $a, $b ) {

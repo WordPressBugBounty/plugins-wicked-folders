@@ -443,6 +443,8 @@ final class Wicked_Folders {
 		$counts 				= array();
 		$folders 				= array();
 		$cache_key 				= array();
+		$wpml_lang 				= apply_filters( 'wpml_current_language', false );
+		$wpml_type 				= "post_{$post_type}";
 		$post_type_object 		= get_post_type_object( $post_type );
 		$show_unassigned_folder = get_option( 'wicked_folders_show_unassigned_folder', true );
 		$show_item_counts 		= get_option( 'wicked_folders_show_item_counts', true );
@@ -462,9 +464,15 @@ final class Wicked_Folders {
 				$counts 		= $wpdb->get_results( $wpdb->prepare( "SELECT tt.term_id, COUNT(tr.object_id) AS n FROM {$wpdb->term_relationships} AS tr INNER JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy = %s GROUP BY tr.term_taxonomy_id", $taxonomy ), OBJECT_K );
 				$assigned_count = ( int ) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(DISTINCT(tr.object_id)) AS n, tt.taxonomy FROM {$wpdb->term_relationships} AS tr INNER JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE tt.taxonomy = %s GROUP BY tt.taxonomy", $taxonomy ) );
 			} else {
-				$counts 		= $wpdb->get_results( $wpdb->prepare( "SELECT tt.term_id, COUNT(tr.object_id) AS n FROM {$wpdb->term_relationships} AS tr INNER JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID WHERE tt.taxonomy = %s AND p.post_status NOT IN ('trash', 'auto-draft') GROUP BY tr.term_taxonomy_id", $taxonomy ), OBJECT_K );
-				$assigned_count = ( int ) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(DISTINCT(p.ID)) AS n, tt.taxonomy FROM {$wpdb->posts} AS p INNER JOIN {$wpdb->term_relationships} AS tr ON p.ID = tr.object_id INNER JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE p.post_type = %s AND p.post_status NOT IN ('trash', 'auto-draft') AND tt.taxonomy = %s GROUP BY tt.taxonomy", $post_type, $taxonomy ) );
-				$total_count 	= ( int ) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(p.ID) AS n FROM {$wpdb->posts} AS p WHERE p.post_type = %s AND p.post_status NOT IN ('trash', 'auto-draft')", $post_type ) );
+				if ( false === $wpml_lang ) {
+					$counts 		= $wpdb->get_results( $wpdb->prepare( "SELECT tt.term_id, COUNT(tr.object_id) AS n FROM {$wpdb->term_relationships} AS tr INNER JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID WHERE tt.taxonomy = %s AND p.post_status NOT IN ('trash', 'auto-draft') GROUP BY tr.term_taxonomy_id", $taxonomy ), OBJECT_K );
+					$assigned_count = ( int ) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(DISTINCT(p.ID)) AS n, tt.taxonomy FROM {$wpdb->posts} AS p INNER JOIN {$wpdb->term_relationships} AS tr ON p.ID = tr.object_id INNER JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id WHERE p.post_type = %s AND p.post_status NOT IN ('trash', 'auto-draft') AND tt.taxonomy = %s GROUP BY tt.taxonomy", $post_type, $taxonomy ) );
+					$total_count 	= ( int ) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(p.ID) AS n FROM {$wpdb->posts} AS p WHERE p.post_type = %s AND p.post_status NOT IN ('trash', 'auto-draft')", $post_type ) );	
+				} else {
+					$counts 		= $wpdb->get_results( $wpdb->prepare( "SELECT tt.term_id, COUNT(tr.object_id) AS n FROM {$wpdb->term_relationships} AS tr INNER JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id INNER JOIN {$wpdb->posts} p ON tr.object_id = p.ID INNER JOIN {$wpdb->prefix}icl_translations translations ON p.ID = translations.element_id WHERE tt.taxonomy = %s AND p.post_status NOT IN ('trash', 'auto-draft') AND translations.language_code = %s AND translations.element_type = %s GROUP BY tr.term_taxonomy_id", $taxonomy, $wpml_lang, $wpml_type ), OBJECT_K );
+					$assigned_count = ( int ) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(DISTINCT(p.ID)) AS n, tt.taxonomy FROM {$wpdb->posts} AS p INNER JOIN {$wpdb->term_relationships} AS tr ON p.ID = tr.object_id INNER JOIN {$wpdb->term_taxonomy} AS tt ON tr.term_taxonomy_id = tt.term_taxonomy_id INNER JOIN {$wpdb->prefix}icl_translations translations ON p.ID = translations.element_id WHERE p.post_type = %s AND p.post_status NOT IN ('trash', 'auto-draft') AND tt.taxonomy = %s AND translations.language_code = %s AND translations.element_type = %s GROUP BY tt.taxonomy", $post_type, $taxonomy, $wpml_lang, $wpml_type ) );
+					$total_count 	= ( int ) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(p.ID) AS n FROM {$wpdb->posts} AS p INNER JOIN {$wpdb->prefix}icl_translations translations ON p.ID = translations.element_id WHERE p.post_type = %s AND p.post_status NOT IN ('trash', 'auto-draft') AND translations.language_code = %s AND translations.element_type = %s", $post_type, $wpml_lang, $wpml_type ) );
+				}
 			}
 
 			if ( $post_type == self::get_user_post_type_name() ) {

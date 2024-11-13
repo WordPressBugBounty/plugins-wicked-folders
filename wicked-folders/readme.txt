@@ -1,9 +1,9 @@
 === Wicked Folders ===
 Contributors: wickedplugins
-Tags: folders, administration, tree view, content management, page organization, custom post type organization, media library folders, media library categories, media library organization
+Tags: folders, organization, page folders, media library folders, media library categories
 Requires at least: 4.6
-Tested up to: 6.6
-Stable tag: 3.0.7
+Tested up to: 6.7
+Stable tag: 3.0.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,11 @@ The folder toggle arrow is greyed out when a folder doesn't have any child folde
 6. Pro feature: folder permissions
 
 == Changelog ==
+
+= 3.0.8 (November 13, 2024) =
+* Fix: wrong item counts when using WPML
+* Fix: folder scripts not enqueued when a block containing an ACF WYSIWYG field is displayed in Edit mode inside the block editor 
+* Tweak: update tested-up-to WordPress version to 6.7
 
 = 3.0.7 (October 23, 2024) =
 * Fix: folders not sorted correctly after adding new folder
