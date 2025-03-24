@@ -180,7 +180,7 @@ final class Admin {
 		wp_register_script( 'wicked-folders-admin', plugin_dir_url( dirname( __FILE__ ) ) . 'js/admin.js', array(), $version, $in_footer );
 
 		wp_register_style( 'wicked-folders-select2', plugin_dir_url( dirname( __FILE__ ) ) . 'vendor/select2/css/select2.min.css', array(), $version );
-		wp_register_style( 'wicked-folders-admin', plugin_dir_url( dirname( __FILE__ ) ) . 'css/admin.css', array(), $version );
+		wp_register_style( 'wicked-folders-admin', plugin_dir_url( dirname( __FILE__ ) ) . 'css/admin.css', array( 'wp-components' ), $version );
 
 		if ( defined( 'WICKED_FOLDERS_APP' ) ) {
 			wp_register_script( 'wicked-folders-app', WICKED_FOLDERS_APP, $deps, $version, $in_footer );
@@ -662,6 +662,7 @@ final class Admin {
 		$show_item_counts 					= get_option( 'wicked_folders_show_item_counts', true );
 		$show_breadcrumbs 					= get_option( 'wicked_folders_show_breadcrumbs', true );
 		$enable_ajax_nav 					= get_option( 'wicked_folders_enable_ajax_nav', true );
+		$enable_context_menus 				= get_option( 'wicked_folders_enable_context_menus', true );
 		$unsupported_types 					= array( 'shop_webhook', 'wf_collection_policy', 'nf_sub', 'wp_navigation' );
 		$attachment_post_type 				= get_post_type_object( 'attachment' );
 		$post_types 						= get_post_types( array(
@@ -673,11 +674,16 @@ final class Admin {
 			'shop_order',
 			'shop_coupon',
 			'tablepress_table',
+			'wpforms',
 			Wicked_Folders::get_user_post_type_name(),
 			Wicked_Folders::get_plugin_post_type_name(),
 			Wicked_Folders::get_gravity_forms_form_post_type_name(),
 			Wicked_Folders::get_gravity_forms_entry_post_type_name(),
 		);
+
+		if ( null !== $wpforms_post_type = get_post_type_object( 'wpforms' ) ) {
+			$post_types['wpforms'] = $wpforms_post_type;
+		}
 
 		// Add stub post types
 		if ( $user_stub_post_type = get_post_type_object( Wicked_Folders::get_user_post_type_name() ) ) {
@@ -955,6 +961,7 @@ final class Admin {
 				$show_item_counts 					= isset( $_POST['show_item_counts'] );
 				$show_breadcrumbs 					= isset( $_POST['show_breadcrumbs'] );
 				$enable_ajax_nav 					= isset( $_POST['enable_ajax_nav'] );
+				$enable_context_menus 				= isset( $_POST['enable_context_menus'] );
 
 				add_option( 'wicked_folders_show_breadcrumbs', $show_breadcrumbs );
 
@@ -975,6 +982,7 @@ final class Admin {
 				update_option( 'wicked_folders_show_item_counts', ( int ) $show_item_counts );
 				update_option( 'wicked_folders_show_breadcrumbs', ( int ) $show_breadcrumbs );
 				update_option( 'wicked_folders_enable_ajax_nav', ( int ) $enable_ajax_nav );
+				update_option( 'wicked_folders_enable_context_menus', ( int ) $enable_context_menus );
 
 				$this->add_admin_notice( __( 'Your changes have been saved.', 'wicked-folders' ) );
 			}

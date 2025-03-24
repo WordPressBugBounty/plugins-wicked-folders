@@ -48,7 +48,7 @@ final class Wicked_Folders {
 
 		// Check for multisite
 		if ( is_multisite() && is_plugin_active_for_network( dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'wicked-folders.php' ) ) {
-			$sites = get_sites( array( 'fields' => 'ids' ) );
+			$sites = get_sites( array( 'fields' => 'ids', 'number' => 999 ) );
 			foreach ( $sites as $id ) {
 				switch_to_blog( $id );
 				Wicked_Folders::activate_site();
@@ -493,8 +493,10 @@ final class Wicked_Folders {
 				if ( class_exists( 'GFAPI' ) ) {
 					$active_forms 	= GFAPI::get_forms();
 					$inactive_forms = GFAPI::get_forms( false );
+					$trashed_forms 	= GFAPI::get_forms( null, true );
 
-					$total_count = count( $active_forms ) + count( $inactive_forms );
+					$total_count 	= count( $active_forms ) + count( $inactive_forms );
+					$assigned_count -= count( $trashed_forms );
 				}
 			}
 

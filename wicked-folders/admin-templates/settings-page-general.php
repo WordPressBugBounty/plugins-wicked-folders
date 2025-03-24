@@ -139,6 +139,18 @@
                 </label>
             </td>
         </tr>
+        <tr>
+            <th scope="row">
+                &nbsp;
+            </th>
+            <td>
+                <label>
+                    <input type="checkbox" name="enable_context_menus" value="1"<?php if ( $enable_context_menus ) echo ' checked="checked"'; ?>/>
+                    <?php _e( 'Enable folder context menus', 'wicked-folders' ); ?>
+                    <span class="dashicons dashicons-editor-help" title="<?php _e( "When checked (default), a button will be displayed after the folder name that displays a context menu with actions such as rename, edit, delete, etc.", 'wicked-folders' ); ?>"></span>
+                </label>
+            </td>
+        </tr>        
     </table>
     <h2><?php _e( 'Dynamic Folders', 'wicked-folders' ); ?></h2>
     <p><?php _e( 'Dynamic folders are generated on the fly based on your content.  They are useful for finding content based on things like date, author, etc.', 'wicked-folders' ); ?></p>
@@ -151,7 +163,7 @@
                 <?php foreach ( $post_types as $post_type ) : ?>
                     <?php
                         if ( ! $is_pro_active && in_array( $post_type->name, $pro_post_types ) ) continue;
-                        if ( in_array( $post_type->name, array( Wicked_Folders::get_plugin_post_type_name(), Wicked_Folders::get_gravity_forms_form_post_type_name(), Wicked_Folders::get_gravity_forms_entry_post_type_name(), 'tablepress_table', 'wf_rcp_membership', 'wf_rcp_customer', 'wf_rcp_level', 'wf_afi_integration' ) ) ) continue;
+                        if ( in_array( $post_type->name, array( Wicked_Folders::get_plugin_post_type_name(), Wicked_Folders::get_gravity_forms_form_post_type_name(), Wicked_Folders::get_gravity_forms_entry_post_type_name(), 'tablepress_table', 'wf_rcp_membership', 'wf_rcp_customer', 'wf_rcp_level', 'wf_afi_integration', 'wpforms' ) ) ) continue;
                     ?>
                     <label>
                         <input type="checkbox" name="dynamic_folder_post_type[]" value="<?php echo esc_attr( $post_type->name ); ?>"<?php if ( in_array( $post_type->name, $dynamic_folders_enabled_posts_types ) ) echo ' checked="checked"'; ?><?php //if ( ! in_array( $post_type->name, $enabled_posts_types ) ) echo ' disabled="disabled"'; ?>/>
