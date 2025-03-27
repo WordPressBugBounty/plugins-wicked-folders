@@ -1264,6 +1264,10 @@ final class Wicked_Folders {
 	 *  The machine name of the post type.
 	 */
 	public static function get_tax_name( $post_name ) {
+		if ( null === $post_name ) {
+			return false;
+		}
+		
 		// Post names are only allowed to be 20 characters so it shouldn't be
 		// necessary to trim the name but do it just in case to ensure the
 		// taxonomy name never exceeds 32 characters

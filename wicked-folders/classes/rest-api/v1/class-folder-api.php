@@ -33,7 +33,7 @@ class Folder_API extends REST_API {
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'create_folder' ),
 				'permission_callback' => array( $this, 'create_folder_permissions_check' ),
-				'args'                => $this->get_endpoint_args_for_item_schema( WP_REST_Server::CREATABLE ),
+				'args'                => $this->get_endpoint_args_for_item_schema( WP_REST_Server::CREATABLE ),				
 			),	
 			array(
 				'methods'             => WP_REST_Server::READABLE,
@@ -213,7 +213,7 @@ class Folder_API extends REST_API {
 		$allowed 	= current_user_can( 'edit_posts' );
         $user_id 	= get_current_user_id();
         $term_id    = $request->get_param( 'id' );
-        $post_type  = $request->get_param( 'postType' );
+        $post_type  = $request->get_param( 'post_type' );
         $taxonomy   = Wicked_Folders::get_tax_name( $post_type );
 
 		return apply_filters( 'wicked_folders_can_assign_items_to_folder', $allowed, $user_id, $term_id, $taxonomy );

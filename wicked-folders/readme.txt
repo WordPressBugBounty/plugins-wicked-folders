@@ -3,7 +3,7 @@ Contributors: wickedplugins
 Tags: folders, organization, page folders, media library folders, media library categories
 Requires at least: 4.6
 Tested up to: 6.7
-Stable tag: 3.1.0
+Stable tag: 3.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,10 @@ The folder toggle arrow is greyed out when a folder doesn't have any child folde
 6. Pro feature: folder permissions
 
 == Changelog ==
+
+= 3.1.1 (March 27, 2025) =
+* Fix: typo causing deprecation warning in PHP 8
+* Fix: deprecation warnings caused in some instances by REST API
 
 = 3.1.0 (March 24, 2025) =
 * New: folder context menus

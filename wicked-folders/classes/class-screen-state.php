@@ -35,7 +35,7 @@ final class Screen_State extends JSON_Serializable_Object {
 	public $sync_upload_folder_dropdown = true;
 	public $is_folder_panel_busy 		= false;
 	public $disable_drag_drop_on_mobile = true;
-	public $enable_context_menu 		= true;
+	public $enable_context_menus 		= true;
 	public $selected_folders 			= array();
     public $schema = array(
         'screenId' 					=> 'screen_id',

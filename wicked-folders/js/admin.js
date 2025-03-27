@@ -17,7 +17,7 @@
             return false;
         } );
 
-        $( '#adminmenu a[href="wicked_folders_toggle"]' ).click( function(){
+        $( '#adminmenu a[href="wicked_folders_toggle"]' ).on( 'click', function(){
             if ( $( 'body' ).hasClass( 'wicked-object-folder-pane' ) ) {
                 $( 'body' ).removeClass( 'wicked-object-folder-pane' );
                 $( 'body' ).trigger( 'wickedfolders:toggleFolderPane', [ false ] );
