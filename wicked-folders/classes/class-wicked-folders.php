@@ -443,7 +443,7 @@ final class Wicked_Folders {
 		$counts 				= array();
 		$folders 				= array();
 		$cache_key 				= array();
-		$wpml_lang 				= apply_filters( 'wpml_current_language', false );
+		$wpml_lang 				= false;
 		$wpml_type 				= "post_{$post_type}";
 		$post_type_object 		= get_post_type_object( $post_type );
 		$show_unassigned_folder = get_option( 'wicked_folders_show_unassigned_folder', true );
@@ -457,6 +457,12 @@ final class Wicked_Folders {
 		);
 
 		if ( ! $taxonomy ) $taxonomy = Wicked_Folders::get_tax_name( $post_type );
+
+		// Polylang also uses the wpml_current_language filter for some reason.
+		// Only use the  filter if WPML is really active
+		if ( defined( 'ICL_SITEPRESS_VERSION' ) ) {
+			$wpml_lang = apply_filters( 'wpml_current_language', false );
+		}
 
 		// Only run count queries when show item counts setting is enabled
 		if ( $show_item_counts ) {

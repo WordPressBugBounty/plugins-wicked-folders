@@ -3,7 +3,7 @@ Contributors: wickedplugins
 Tags: folders, organization, page folders, media library folders, media library categories
 Requires at least: 4.6
 Tested up to: 6.7
-Stable tag: 3.1.1
+Stable tag: 3.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,9 @@ The folder toggle arrow is greyed out when a folder doesn't have any child folde
 6. Pro feature: folder permissions
 
 == Changelog ==
+
+= 3.1.2 (May 21, 2025) =
+* Fix: Missing database table errors when using Polylang due to Polylang using wpml_current_language filter
 
 = 3.1.1 (March 27, 2025) =
 * Fix: typo causing deprecation warning in PHP 8
