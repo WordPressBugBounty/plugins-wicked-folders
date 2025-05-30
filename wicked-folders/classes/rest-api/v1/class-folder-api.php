@@ -421,6 +421,8 @@ class Folder_API extends REST_API {
 	}
 
 	public function sort_folders( $request ) {
+		global $wpdb;
+		
 		$folder_ids = $request->get_param( 'folder_ids' );
 
 		foreach ( $folder_ids as $index => $folder_id ) {
