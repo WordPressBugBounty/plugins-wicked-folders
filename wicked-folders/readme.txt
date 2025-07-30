@@ -3,7 +3,7 @@ Contributors: wickedplugins
 Tags: folders, organization, page folders, media library folders, media library categories
 Requires at least: 4.6
 Tested up to: 6.7
-Stable tag: 3.1.3
+Stable tag: 3.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -143,6 +143,9 @@ The folder toggle arrow is greyed out when a folder doesn't have any child folde
 6. Pro feature: folder permissions
 
 == Changelog ==
+
+= 3.1.4 (July 30, 2025) =
+* Fix: folder pane overlapping page content when using Adminify plugin with Adminify UI enabled
 
 = 3.1.3 (May 30, 2025) =
 * Fix: fatal error appearing in debug log when saving folder sort order when Category Order and Taxonomy Terms Order plugin is also active
