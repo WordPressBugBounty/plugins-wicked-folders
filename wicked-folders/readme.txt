@@ -1,67 +1,133 @@
-=== Wicked Folders ===
+=== Wicked Folders - Folder Organizer for Pages, Posts, and Custom Post Types ===
 Contributors: wickedplugins
 Tags: folders, organization, page folders, media library folders, media library categories
 Requires at least: 4.6
-Tested up to: 6.7
-Stable tag: 3.1.4
+Tested up to: 6.9
+Stable tag: 4.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Organize pages and custom post types into folders.
+Organize your pages, posts, and custom post types into folders. Upgrade to pro for media library folders, WooCommerce integration, and more.
 
 == Description ==
 
-**Organize your site's pages and custom post types into folders.**
+**Ever wished you could use folders to organize your WordPress site’s pages, posts, and custom post types to make things easier to find?**   If so, Wicked Folders is the plugin you’ve been looking for!
 
-The ultimate tool for managing large numbers of pages and custom post types.  Save time, stay organized, and find things fast by organizing your site's content into folders.
+Wicked Folders makes it easy to organize pages, posts, and custom post types into folders.  With our pro version, you can organize your media library, users, WooCommerce products, orders, and coupons, Gravity Forms forms and entries, and more!
 
-[**Go Pro**](https://wickedplugins.com/plugins/wicked-folders/?utm_source=readme&utm_campaign=wicked_folders&utm_content=go_pro_link) 🚀
+[Compare Free vs. Pro](https://wickedplugins.com/support/wicked-folders/free-vs-pro/?utm_source=readme&utm_campaign=wicked_folders&utm_content=free_vs_pro_link) | 🚀 [Get Wicked Folders Pro](https://wickedplugins.com/plugins/wicked-folders/?utm_source=readme&utm_campaign=wicked_folders&utm_content=go_pro_link)
 
-= Features =
-* Organize pages, posts, and custom post types into folders
-* Control which post types can be organized using folders
-* Create an unlimited number of folders and nest them any way you like
-* Tree view of folders
-* Drag and drop folders to easily reorganize them
-* Drag and drop items to quickly move them into folders
-* Bulk move items to folders
-* Assign items to multiple folders
-* Toggle folder pane on or off
-* Clone folders
-* Resizable folder pane
-* Dynamic folders (read more below)
-* Search folders
-* Display number of items assigned to each folder
-* Support for right-to-left languages
-* Doesn't alter your content’s permalinks or hierarchy giving you the freedom to organize your pages, posts, and custom post types any way you want independently of your site’s structure
+### 🕺 Features
+**Organize Pages and Posts Into Folders**
+Easily create folders and drag-and-drop pages or blog posts into folders.  Create unlimited folders.  Drag and drop to organize folders any way you like.
 
-= Dynamic Folders =
-Dynamic folders let you to filter pages (and custom post types) by things like date or author.  You can even browse pages or custom post types by other categories that are assigned to the post type.  The handy "Unassigned Items" dynamic folder shows you items that haven't been assigned to a folder yet and the "Page Hierarchy" folder lets you browse your pages as if each parent page were a folder.  Dynamic folders are generated on the fly which means you don’t have to do anything; simply install the plugin and enable dynamic folders for the post types you want on the Wicked Folders settings page.  See the screenshots section for an example.
+**Organize Custom Post Types Using Folders**
+Wicked Folders can also be used with most custom post types out-of-the-box to organize them into folders just like pages and posts.
 
-= How the Plugin Works =
-Wicked Folders works by leveraging WordPress’s built-in taxonomy API.  When you enable folders for pages or a custom post type, the plugin creates a new taxonomy for that post type called ‘Folders’.  Folders are essentially another type of category and work like blog post categories; the difference is that Wicked Folders allows you to easily browse your content by folder.
+**Folder Colors**
+Assign colors to folders to make it even easier to identify folders and decorate your folder tree.  Define your own color palette and add as many colors as you want.
 
-This plugin does not alter your page or custom post types’ permalinks, hierarchy, sort order, or anything else; it simply allows you to organize your pages and custom post types into virtual folders so that you can find them more easily.
+**Unassigned Items Folder**
+See at a glance which items haven’t been assigned to a folder.
 
-= Wicked Folders Pro =
-Organize your WordPress media library, users, plugins, and more using folders with [Wicked Folders Pro](https://wickedplugins.com/plugins/wicked-folders/?utm_source=readme&utm_campaign=wicked_folders&utm_content=pro_link).  Wicked Folders Pro lets you use folders to organize:
+**Store Items in Multiple Folders**
+Assign items to more than one folder if desired for maximum organization and flexibility. 
 
-* Media
-* Users
-* Plugins
-* Gravity Forms entries and forms
-* WooCommerce products, orders, and coupons
-* Restrict Content Pro memberships and customers
-* Everest Forms
-* TablePress tables
+**Dynamic Folders**
+Our one-of-a-kind dynamic folders feature lets you filter content by author, date, category, and more.  The best part is Wicked Folders remembers the last dynamic folder you selected so when you return to the screen later you won’t have to filter your content again.  Imagine being able to focus on posts in a specific category or by a specific author without needing to filter the posts each time you return to the list.
 
-[Learn more about Wicked Folders Pro](https://wickedplugins.com/plugins/wicked-folders/?utm_source=readme&utm_campaign=wicked_folders&utm_content=pro_learn_more_link).
+**Page Hierarchy Dynamic Folder**
+A unique feature that lets you browse your pages as if each parent page were a folder showing you only the child folders of the selected page.  Great for when you want to focus on a specific sub-section of your site.
 
-= Support =
+**Clone Folders**
+Easily duplicate folders.  Choose whether or not to clone child folders as well.
+
+**Folder Context Menu**
+Access common folder actions via a handy context menu.
+
+**Bulk Delete Folders**
+Select folders in bulk and delete them all at once.
+
+**Folder Search**
+Quickly search the folder tree to find the folder(s) you’re looking for.
+
+**Folder Item Count**
+See how many items are in each folder (including number of unassigned items).
+
+**Resizable Folder Pane**
+Make the folder pane as wide or narrow as you want.
+
+**Show/Hide Folder Pane**
+Hide the folder pane when needed to reduce clutter and save space.  When you want to see the folders again, simply toggle the folder pane open again.
+
+**Folder Breadcrumbs**
+Breadcrumbs displayed at the top of page, post, and custom post type lists make it easy to see the hierarchy of the selected folder and offer another way to navigate to parent folders.
+
+**Media Library Folders (Pro)**
+Organize your site’s media into folders with media library folders.  Filter and organize media by folder anywhere the media library appears in WordPress including when selecting images in the WordPress editor, inserting images in Elementor or Divi (or any other page builder), and inserting images from an Advanced Custom Fields image or gallery field.
+
+**Media Extension Dynamic Folder (Pro)**
+Instantly view media by file extension.  For example, view all PDF files (.pdf) without having to sift through images and other media.
+
+**Folder Permissions (Pro)**
+Control which roles can create, view, edit, and delete folders and which roles can view other users’ content.  Great for marketplace sites and sites where users manage their own content.
+
+**Separate Folders for Each User (Pro)**
+Use folder permissions to give each user their own unique set of folders that only they can see.
+
+**WooCommerce Integration (Pro)**
+Organize your store’s products, orders, coupons, and reviews into folders.
+
+**Gravity Forms Integration (Pro)**
+Organize Gravity Forms forms and entries into folders.
+
+**User Folders (Pro)**
+Organize your site’s users into folders.
+
+**Plugin Folders (Pro)**
+Organize your site’s plugins into folders
+
+### 🤩 More Reasons to Love Wicked Folders
+**Save Time**
+Sifting through lots of pages or posts on a large site trying to find what you’re looking for can be time-consuming.  Wicked Folders saves you time by allowing you to organize your content into folders in a way that makes sense to you.  
+
+**Organize Without Fear of Breaking Your Site**
+Wicked Folders doesn’t change your page or post’s URL so you can organize them into folders without having to worry about your site breaking.
+
+**Clean Modern Interface That Blends Into WordPress**
+Wicked Folders is designed to blend into the WordPress admin so it feels like a native feature.  A modern interface makes it comfortable and intuitive to use.
+
+**Lightweight and Built for Performance**
+Wicked Folders is a lightweight plugin that won’t bloat or slow down your site.  Folders are only loaded in the admin and dynamic folders (which are generated on the fly) are lazy loaded.
+
+**WPML and Polylang Support**
+Wicked Folders works with WPML and Polylang.
+
+**Works With Your Favorite Page Builder**
+Wicked Folders seamlessly integrates with all popular page builders including Elementor, Divi, WPBakery, Beaver Builder, and others.
+
+**REST API, Filters, and Object-Oriented Architecture**
+For power users, Wicked Folders includes a REST API for interacting with folders.  Filters and an easy-to-understand object-oriented architecture facilitate advanced customizations.
+
+**Fast Helpful Support**
+We’re here to help!  Post a message in the support forum or contact us and we’ll get back to you ASAP.
+
+### 🚀 Get Wicked Folders Pro
+Ready to take your WordPress organization to the next level? Upgrade to Wicked Folders Pro and unlock powerful features beyond basic folders. Organize your entire media library, users, plugins, WooCommerce products, orders, coupons, and reviews, Gravity Forms forms and entries, TablePress tables, and so much more.  Plus get powerful features like folder permissions and private folder structures.
+
+[Get Wicked Folders Pro!](https://wickedplugins.com/plugins/wicked-folders/?utm_source=readme&utm_campaign=wicked_folders&utm_content=go_pro_lower_link)
+
+### Other Plugins by Wicked Plugins
+**🤖 Wicked Alt Text AI**
+An AI image alt text generator.  Save time, improve accessibility, and boost SEO by using AI to automatically generate high-quality alt text for images.
+[Learn more about Wicked Alt Text AI](https://wickedplugins.com/plugins/wicked-alt-text-ai/?utm_source=readme&utm_campaign=wicked_alt_text_ai&utm_content=wicked_folders_readme)
+
+**🔨 Wicked Block Builder**
+Build native WordPress blocks without needing to know React.
+[Learn more about Wicked Block Builder](https://wickedplugins.com/plugins/wicked-block-builder/?utm_source=readme&utm_campaign=wicked_block_builder&utm_content=wicked_folders_readme)
+
+### Need Help?
 Please see the [FAQ section]( https://wordpress.org/plugins/wicked-folders/#faq) for common questions, [check out the documentation](https://wickedplugins.com/support/wicked-folders/?utm_source=readme&utm_campaign=wicked_plugins&utm_content=documentation_link) or, [visit the support forum]( https://wordpress.org/support/plugin/wicked-folders) if you have a question or need help.
-
-= About Wicked Plugins =
-Wicked Plugins specializes in crafting high-quality, reliable plugins that extend WordPress in powerful ways while being simple and intuitive to use.  We’re full-time developers who know WordPress inside and out and our customer happiness engineers offer friendly support for all our products. [Visit our website](https://wickedplugins.com/??utm_source=readme&utm_campaign=wicked_plugins&utm_content=about_link) to learn more about us.
 
 == Installation ==
 
@@ -144,6 +210,21 @@ The folder toggle arrow is greyed out when a folder doesn't have any child folde
 
 == Changelog ==
 
+= 4.1.0 (November 14, 2025) =
+* New: setting to enable/disable lazy loading dynamic folders
+* Fix: infinite reload loop when a dynamic folder is selected and the 'Don't reload page when navigating folders' option is enabled
+* Fix: selected folder not appearing when screen is loaded with a page hierarchy folder selected
+* Fix: Elementor admin bar overlapping folder pane on Templates screen
+
+= 4.0.0 (November 10, 2025) =
+* Note: if you've made customizations to Wicked Folders, please read the [release notes](https://wickedplugins.com/support/wicked-folders/wicked-folders-4-release-notes/) for possible breaking changes
+* New: ability to change folder colors
+* New: option to empty folder from context menu
+* Tweak: add clone folder option to context menu
+* Tweak: collapse folder pane toolbar buttons into a single menu button to save space
+* Tweak: lazy load dynamic folders for better performance
+* Fix: unnecessary re-renders in folder pane
+
 = 3.1.4 (July 30, 2025) =
 * Fix: folder pane overlapping page content when using Adminify plugin with Adminify UI enabled
 
@@ -151,7 +232,7 @@ The folder toggle arrow is greyed out when a folder doesn't have any child folde
 * Fix: fatal error appearing in debug log when saving folder sort order when Category Order and Taxonomy Terms Order plugin is also active
 
 = 3.1.2 (May 21, 2025) =
-* Fix: Missing database table errors when using Polylang due to Polylang using wpml_current_language filter
+* Fix: missing database table errors when using Polylang due to Polylang using wpml_current_language filter
 
 = 3.1.1 (March 27, 2025) =
 * Fix: typo causing deprecation warning in PHP 8

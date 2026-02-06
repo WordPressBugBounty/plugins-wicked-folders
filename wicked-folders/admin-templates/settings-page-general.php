@@ -150,7 +150,34 @@
                     <span class="dashicons dashicons-editor-help" title="<?php _e( "When checked (default), a button will be displayed after the folder name that displays a context menu with actions such as rename, edit, delete, etc.", 'wicked-folders' ); ?>"></span>
                 </label>
             </td>
-        </tr>        
+        </tr>  
+        <tr>
+            <th scope="row">
+                <?php _e( 'Colors:', 'wicked-folders' ); ?>
+            </th>
+            <td>
+                <div id="colors" class="colors">
+                    <ul>
+                        <?php foreach ( $colors as $color ) : ?>
+                            <li>
+                                <div class="color" style="background-color: <?php echo esc_attr( $color ); ?>;">
+                                    <span class="screen-reader-text"><?php echo esc_html( $color ); ?></span>
+                                </div>
+                                <button type="button">
+                                    <span class="screen-reader-text">Delete color</span>
+                                    <span class="dashicons dashicons-trash"></span>
+                                </button>
+                                <input type="hidden" name="colors[]" value="<?php echo esc_attr( $color ); ?>" />
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <input id="color-picker" type="text" data-coloris />
+                    <button id="add-color" class="button" type="button">
+                        <?php _e( 'Add Color', 'wicked-folders' ); ?>
+                    </button>
+                </div>
+            </td>
+        </tr>               
     </table>
     <h2><?php _e( 'Dynamic Folders', 'wicked-folders' ); ?></h2>
     <p><?php _e( 'Dynamic folders are generated on the fly based on your content.  They are useful for finding content based on things like date, author, etc.', 'wicked-folders' ); ?></p>
@@ -163,7 +190,7 @@
                 <?php foreach ( $post_types as $post_type ) : ?>
                     <?php
                         if ( ! $is_pro_active && in_array( $post_type->name, $pro_post_types ) ) continue;
-                        if ( in_array( $post_type->name, array( Wicked_Folders::get_plugin_post_type_name(), Wicked_Folders::get_gravity_forms_form_post_type_name(), Wicked_Folders::get_gravity_forms_entry_post_type_name(), 'tablepress_table', 'wf_rcp_membership', 'wf_rcp_customer', 'wf_rcp_level', 'wf_afi_integration', 'wpforms' ) ) ) continue;
+                        if ( in_array( $post_type->name, array( 'wf_gf_form', 'wf_gf_entry', 'tablepress_table', 'wf_rcp_membership', 'wf_rcp_customer', 'wf_rcp_level', 'wf_afi_integration', 'wpforms', 'wf_plugin', 'wf_wc_product_review' ) ) ) continue;
                     ?>
                     <label>
                         <input type="checkbox" name="dynamic_folder_post_type[]" value="<?php echo esc_attr( $post_type->name ); ?>"<?php if ( in_array( $post_type->name, $dynamic_folders_enabled_posts_types ) ) echo ' checked="checked"'; ?><?php //if ( ! in_array( $post_type->name, $enabled_posts_types ) ) echo ' disabled="disabled"'; ?>/>
@@ -173,18 +200,18 @@
                 <?php endforeach; ?>
             </td>
         </tr>
-        <?php /* ?>
-        <th scope="row">
-            <?php _e( 'Tree View', 'wicked-folders' ); ?>
-        </th>
-        <td>
-            <label>
-                <input type="checkbox" name="show_folder_contents_in_tree_view" value="1"<?php if ( $show_folder_contents_in_tree_view ) echo ' checked="checked"'; ?>/>
-                <?php _e( 'Show folder contents in tree view', 'wicked-folders' ); ?>
-            </label>
-            <p class="description"><?php _e( "When checked, the tree view will display each folder's items in addition to its sub folders.", 'wicked-folders' ); ?></p>
-        </td>
-        <?php */ ?>
+        <tr>
+            <th scope="row">
+                &nbsp;
+            </th>
+            <td>
+                <label>
+                    <input type="checkbox" name="enable_lazy_dynamic_folders" value="1"<?php if ( $enable_lazy_dynamic_folders ) echo ' checked="checked"'; ?>/>
+                    <?php _e( 'Lazy load dynamic folders', 'wicked-folders' ); ?>
+                    <span class="dashicons dashicons-editor-help" title="<?php _e( 'Improves performance by only loading dynamic folders when needed. When disabled, dynamic folders are loaded immediately.', 'wicked-folders' ); ?>"></span>
+                </label>
+            </td>
+        </tr>  
     </table>
     <?php if ( $is_pro_active ) : ?>
         <h2><?php _e( 'Media', 'wicked-folders' ); ?></h2>
@@ -246,3 +273,55 @@
         <input name="submit" id="submit" class="button button-primary" value="<?php _e( 'Save Changes' ); ?>" type="submit" />
     </p>
 </form>
+<script>
+    Coloris( {
+        alpha:          false,
+        closeButton:    true,
+        closeLabel:     '<?php echo _e( 'Close', 'wicked-folders' ); ?>'
+    } );
+
+    ( function( $ ){
+        $( function(){
+            $( '#add-color' ).on( 'click', function( e ){
+                var color = $( '#color-picker' ).val() || '#000000';
+                var li = $( '<li>' );
+                var colorDiv = $( '<div class="color">' )
+                    .css( 'background-color', color )
+                    .appendTo( li );
+
+                $( '<span class="screen-reader-text">' )
+                    .text( color )
+                    .appendTo( colorDiv );
+
+                var button = $( '<button type="button">' )
+                    .appendTo( li );
+
+                $( '<span class="screen-reader-text">Delete color</span><span class="dashicons dashicons-trash"></span>' )
+                    .appendTo( button );
+
+                $( '<input type="hidden" name="colors[]">' )
+                    .val( color )
+                    .appendTo( li );
+
+                $( '#colors ul' ).append( li ); 
+
+                $( '#color-picker' ).click();
+            } );
+
+            $( '#color-picker' ).on( 'input', function( e ){
+                var color = $( this ).val();
+
+                $( '#colors ul li:last .color' )
+                    .css( 'background-color', color )
+                    .find( '.screen-reader-text' )
+                    .text( color );
+
+                $( '#colors ul li:last input' ).val( color );
+            } );
+
+            $( '#colors' ).on( 'click', ' li button', function(){
+                $( this ).closest( 'li' ).remove();
+            } );
+        } );
+    } ( jQuery ) );
+</script>
