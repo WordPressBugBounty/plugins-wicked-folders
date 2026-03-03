@@ -163,10 +163,14 @@ class Post_Hierarchy_Dynamic_Folder extends Dynamic_Folder {
 
         if ( 'dynamic_hierarchy_0' != $id ) {
             $post_id            = ( int ) substr( $id, 18 );
-            $parent             = 'dynamic_hierarchy_' . wp_get_post_parent_id( $post_id );
-            $ancestors[]        = $parent;
-            $parent_ancestors   = $this->get_ancestor_ids( $parent );
-            $ancestors          = array_merge( $ancestors, $parent_ancestors );
+            $parent_id          = wp_get_post_parent_id( $post_id );
+
+            if ( $parent_id ) {
+                $parent             = 'dynamic_hierarchy_' . $parent_id;
+                $ancestors[]        = $parent;
+                $parent_ancestors   = $this->get_ancestor_ids( $parent );
+                $ancestors          = array_merge( $ancestors, $parent_ancestors );
+            }
         } else {
             $ancestors[] = 'dynamic_root';
         }

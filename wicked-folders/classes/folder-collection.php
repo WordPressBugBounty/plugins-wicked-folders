@@ -68,6 +68,17 @@ class Folder_Collection extends Collection implements JsonSerializable {
             if ( $folder->id === $item->id ) {
                 unset( $this->items[ $index ] );
 
+                // Re-index. I don't understand why this is needed but leaving it out
+                // can prevent looping over the collection sometimes
+                $this->items = array_values( $this->items );
+
+                // Adjust index if the removed item is the same or before the current index.
+                // Setting to -1 is okay because the next() method will increment it (although
+                // then current() will be wrong so perhaps this needs to be implemented differently?)
+                if ( $index <= $this->index ) {
+                    $this->index--;
+                }
+
                 break;
             }
         }

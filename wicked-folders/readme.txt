@@ -3,7 +3,7 @@ Contributors: wickedplugins
 Tags: folders, organization, page folders, media library folders, media library categories
 Requires at least: 4.6
 Tested up to: 6.9
-Stable tag: 4.1.0
+Stable tag: 4.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -209,6 +209,10 @@ The folder toggle arrow is greyed out when a folder doesn't have any child folde
 6. Pro feature: folder permissions
 
 == Changelog ==
+
+= 4.1.1 (March 3, 2026) =
+* Fix: Fatal error sometimes being caused by recursive loop when viewing post hierarchy dynamic folder
+* Fix: users with contributor role and above able to delete folders using REST API
 
 = 4.1.0 (November 14, 2025) =
 * New: setting to enable/disable lazy loading dynamic folders

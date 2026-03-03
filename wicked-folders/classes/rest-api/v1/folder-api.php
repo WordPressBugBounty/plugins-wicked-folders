@@ -277,27 +277,41 @@ class Folder_API extends REST_API {
     }
 
     public function update_folder_permissions_check( $request ) {
-        $allowed 	= current_user_can( 'edit_posts' );
         $user_id 	= get_current_user_id();
         $term_id    = $request->get_param( 'id' );
         $post_type  = $request->get_param( 'postType' );
         $taxonomy   = Wicked_Folders::get_tax_name( $post_type );
+        $allowed 	= current_user_can( 'edit_term', $term_id );
 
         return apply_filters( 'wicked_folders_can_edit_folder', $allowed, $user_id, $term_id, $taxonomy );
     }
 
     public function delete_folder_permissions_check( $request ) {
-        $allowed 	= current_user_can( 'edit_posts' );
         $user_id 	= get_current_user_id();
         $term_id    = $request->get_param( 'id' );
         $post_type  = $request->get_param( 'postType' );
         $taxonomy   = Wicked_Folders::get_tax_name( $post_type );
+        $allowed 	= current_user_can( 'delete_term', $term_id );
 
         return apply_filters( 'wicked_folders_can_delete_folder', $allowed, $user_id, $term_id, $taxonomy );
     }
 
     public function delete_folders_permissions_check( $request ) {
-        return current_user_can( 'edit_posts' );
+        $user_id 	= get_current_user_id();
+        $post_type  = $request->get_param( 'post_type' );
+        $folder_ids = $request->get_param( 'folder_ids' );
+        $taxonomy   = Wicked_Folders::get_tax_name( $post_type );
+
+        foreach ( $folder_ids as $term_id ) {
+            $allowed = current_user_can( 'delete_term', $term_id );
+            $allowed = apply_filters( 'wicked_folders_can_delete_folder', $allowed, $user_id, $term_id, $taxonomy );
+
+            if ( ! $allowed ) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function assign_items_permissions_check( $request ) {
