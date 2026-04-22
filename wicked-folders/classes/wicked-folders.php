@@ -48,6 +48,7 @@ final class Wicked_Folders {
         // Initalize admin singleton
         Admin::get_instance();
 
+        new Wicked_Folders\Integrations\Elementor\Integrator();
         new Wicked_Folders\Integrations\WPML\Integrator();
     }
 
@@ -122,6 +123,7 @@ final class Wicked_Folders {
             'Wicked_Folders\JSON_Serializable_Object' 		    => 'classes/json-serializable-object.php',
             'Wicked_Folders\Singleton' 						    => 'classes/singleton.php',
             'Wicked_Folders\Folder_Factory' 				    => 'classes/folder-factory.php',
+            'Wicked_Folders\Integrations\Elementor\Integrator' 	=> 'classes/integrations/elementor/integrator.php',
             'Wicked_Folders\Integrations\WPML\Integrator' 	    => 'classes/integrations/wpml/integrator.php',
             'Wicked_Folders\REST_API\v1\REST_API' 			    => 'classes/rest-api/v1/rest-api.php',
             'Wicked_Folders\REST_API\v1\Folder_API' 		    => 'classes/rest-api/v1/folder-api.php',

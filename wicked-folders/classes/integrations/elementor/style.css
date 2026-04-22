@@ -1,0 +1,37 @@
+body.admin-bar #wicked-folder-pane:not(.wicked-media-modal-folder-pane) .wicked-content,
+body.admin-bar #wicked-folder-pane:not(.wicked-media-modal-folder-pane) .wicked-resizer,
+body.admin-bar #wicked-folder-pane .wicked-navigating-mask {
+    top: 82px;
+}
+
+body.wicked-folders-enabled:has(#editor-one-top-bar > *) #wpbody {
+    left: calc(var(--editor-one-sidebar-left-offset, 160px) + var(--editor-one-sidebar-navigation-width, 240px) + (var(--wicked-folders-tree-pane-width) - 12px));
+    width: calc(100% - var(--editor-one-sidebar-left-offset, 160px) - var(--editor-one-sidebar-navigation-width, 240px) - (var(--wicked-folders-tree-pane-width) - 12px));
+    transition: left 0.3s ease-in-out;
+}
+
+body.wp-admin.wicked-folders-enabled #wpfooter {
+    left: auto;
+}
+
+#wicked-folder-pane .wicked-resizer,
+#wicked-folder-pane .wicked-content {
+    left: calc(var(--wicked-folders-sidebar-width) + var(--editor-one-sidebar-navigation-width));
+    transition: left 0.3s ease-in-out;
+}
+
+.wicked-folders-toggle {
+    left: calc(var(--editor-one-sidebar-navigation-width, 240px) + var(--wicked-folders-sidebar-width) - 13px);
+    transition: left 0.3s ease-in-out;
+}
+
+.wicked-folders-toggle.expanded {
+    left: calc(var(--editor-one-sidebar-navigation-width, 240px) + var(--wicked-folders-sidebar-width) + var(--wicked-folders-tree-pane-width) - 20px);
+    transition: left 0.3s ease-in-out;
+}
+
+body.folded #wicked-folder-pane:not(.wicked-media-modal-folder-pane) .wicked-content,
+body.folded #wicked-folder-pane:not(.wicked-media-modal-folder-pane) .wicked-resizer,
+body.folded #wicked-folder-pane .wicked-navigating-mask {
+    left: calc(var(--editor-one-sidebar-navigation-width, 240px) + 36px);
+}
