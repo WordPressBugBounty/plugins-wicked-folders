@@ -43,13 +43,51 @@ final class Wicked_Folders {
         add_action( 'Wicked_Folders\All_Folders_Collection\fetch', array( Post_Hierarchy_Dynamic_Folder::class,     'add_to_collection' ) );
         add_action( 'Wicked_Folders\All_Folders_Collection\fetch', array( Term_Dynamic_Folder_Collection::class,    'add_to_collection' ) );
 
-        add_filter( 'et_common_should_enqueue_react', '__return_false' );
-        
+        add_filter( 'et_common_should_enqueue_react', array( $this, 'should_enqueue_divi_react' ) );
+
         // Initalize admin singleton
         Admin::get_instance();
 
         new Wicked_Folders\Integrations\Elementor\Integrator();
         new Wicked_Folders\Integrations\WPML\Integrator();
+    }
+
+    /**
+     * Filters whether Divi should enqueue its copy of React.
+     *
+     * Divi versions prior to 5 load a copy of React that conflicts with the
+     * one Wicked Folders relies on, so for those versions we prevent Divi from
+     * enqueuing React. Divi 5 and later no longer cause this conflict, so we
+     * leave the value untouched. When Divi is not present (or its version can't
+     * be determined) the filtered value is returned unchanged.
+     *
+     * @param bool $should_enqueue Whether Divi intends to enqueue React.
+     * @return bool
+     */
+    public function should_enqueue_divi_react( $should_enqueue ) {
+        // Resolve and cache the major version once; the version doesn't change
+        // within a request and parsing it repeatedly is wasteful.
+        static $major_version = null;
+
+        if ( null === $major_version ) {
+            if ( defined( 'ET_BUILDER_PRODUCT_VERSION' ) ) {
+                $version = ET_BUILDER_PRODUCT_VERSION;
+            } elseif ( defined( 'ET_CORE_VERSION' ) ) {
+                $version = ET_CORE_VERSION;
+            } else {
+                $version = '';
+            }
+
+            // (int) casting a version string keeps the leading integer, e.g.
+            // "4.27.4" => 4, "5.0.0" => 5. 0 means the version is unknown.
+            $major_version = (int) $version;
+        }
+
+        if ( $major_version > 0 && $major_version < 5 ) {
+            return false;
+        }
+
+        return $should_enqueue;
     }
 
     /**

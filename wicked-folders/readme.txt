@@ -2,8 +2,8 @@
 Contributors: wickedplugins
 Tags: folders, organization, page folders, media library folders, media library categories
 Requires at least: 4.6
-Tested up to: 6.9
-Stable tag: 4.1.2
+Tested up to: 7.0
+Stable tag: 4.1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -209,6 +209,9 @@ The folder toggle arrow is greyed out when a folder doesn't have any child folde
 6. Pro feature: folder permissions
 
 == Changelog ==
+
+= 4.1.3 (June 23, 2026) =
+* Fix: conflict causing some Divi 5 screens to not load
 
 = 4.1.2 (April 22, 2026) =
 * Fix: folder pane appearing underneath sidebar in admin on WordPress.com-hosted sites
