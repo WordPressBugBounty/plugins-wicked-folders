@@ -3,6 +3,7 @@
 use Wicked_Folders\Common;
 use Wicked_Folders\REST_API\v1\Folder_API;
 use Wicked_Folders\REST_API\v1\Screen_State_API;
+use Wicked_Folders\REST_API\v1\Settings_API;
 use Wicked_Folders\Admin;
 use Wicked_Folders\Author_Dynamic_Folder;
 use Wicked_Folders\Author_Dynamic_Folder_Collection;
@@ -10,6 +11,7 @@ use Wicked_Folders\Date_Dynamic_Folder;
 use Wicked_Folders\Date_Dynamic_Folder_Collection;
 use Wicked_Folders\Folder;
 use Wicked_Folders\Post_Hierarchy_Dynamic_Folder;
+use Wicked_Folders\Settings;
 use Wicked_Folders\Term_Dynamic_Folder;
 use Wicked_Folders\Term_Dynamic_Folder_Collection;
 use Wicked_Folders\Term_Folder;
@@ -45,8 +47,9 @@ final class Wicked_Folders {
 
         add_filter( 'et_common_should_enqueue_react', array( $this, 'should_enqueue_divi_react' ) );
 
-        // Initalize admin singleton
+        // Initalize admin singletons
         Admin::get_instance();
+        Settings::get_instance();
 
         new Wicked_Folders\Integrations\Elementor\Integrator();
         new Wicked_Folders\Integrations\WPML\Integrator();
@@ -141,6 +144,7 @@ final class Wicked_Folders {
         $files  = array(
             'Wicked_Folders\Screen_State' 					    => 'classes/screen-state.php',
             'Wicked_Folders\Admin' 							    => 'classes/admin.php',
+            'Wicked_Folders\Settings' 						    => 'classes/settings.php',
             'Wicked_Folders\Folder' 						    => 'classes/folder.php',
             'Wicked_Folders\Tree_View' 						    => 'classes/tree-view.php',
             'Wicked_Folders\Term_Folder' 					    => 'classes/term-folder.php',
@@ -166,6 +170,7 @@ final class Wicked_Folders {
             'Wicked_Folders\REST_API\v1\REST_API' 			    => 'classes/rest-api/v1/rest-api.php',
             'Wicked_Folders\REST_API\v1\Folder_API' 		    => 'classes/rest-api/v1/folder-api.php',
             'Wicked_Folders\REST_API\v1\Screen_State_API' 	    => 'classes/rest-api/v1/screen-state-api.php',
+            'Wicked_Folders\REST_API\v1\Settings_API' 	        => 'classes/rest-api/v1/settings-api.php',
         );
 
         if ( array_key_exists( $class, $files ) ) {
@@ -182,6 +187,7 @@ final class Wicked_Folders {
     public function rest_api_init() {
         $folder_api 		= new Folder_API();
         $screen_state_api 	= new Screen_State_API();
+        $settings_api 		= new Settings_API();
     }
 
     public static function get_instance() {
@@ -205,8 +211,6 @@ final class Wicked_Folders {
         }
 
         $this->register_taxonomies();
-
-        Admin::get_instance()->save_settings();
 
         // Update existing installs that don't have the dynamic folders option set yet
         $post_types = get_option( 'wicked_folders_dynamic_folder_post_types', false );
@@ -396,12 +400,25 @@ final class Wicked_Folders {
         }
 
         if ( 'post' == $object_type ) {
-            // Get the folder term
+            // Get the folder term. Note that this is intentionally not
+            // restricted to folder taxonomies; term dynamic folders let items
+            // be dragged onto a category (or any other term) to assign it
             $folder = get_term( $destination_folder_id );
+
+            // Bail if the destination term doesn't exist
+            if ( ! $folder || is_wp_error( $folder ) ) {
+                return false;
+            }
+
             // Get the folders that the post is currently assigned to
             $terms 	= wp_get_object_terms( $object_id, $folder->taxonomy, array(
                 'fields' => 'ids',
             ) );
+
+            if ( is_wp_error( $terms ) ) {
+                return false;
+            }
+
             // Add the destination folder
             if ( 0 !== $destination_folder_id ) {
                 $terms[] = $destination_folder_id;
@@ -415,8 +432,11 @@ final class Wicked_Folders {
                 }
             }
             $result = wp_set_object_terms( $object_id, $terms, $folder->taxonomy );
+
+            return ! is_wp_error( $result );
         }
 
+        return false;
     }
 
     /**

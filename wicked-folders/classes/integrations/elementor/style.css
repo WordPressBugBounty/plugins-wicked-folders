@@ -14,24 +14,33 @@ body.wp-admin.wicked-folders-enabled #wpfooter {
     left: auto;
 }
 
-#wicked-folder-pane .wicked-resizer,
-#wicked-folder-pane .wicked-content {
-    left: calc(var(--wicked-folders-sidebar-width) + var(--editor-one-sidebar-navigation-width));
-    transition: left 0.3s ease-in-out;
-}
+/*
+ * Elementor's sidebar navigation layout only applies at 783px and up. The
+ * body.e-has-sidebar-navigation prefix ensures these rules win over the base
+ * folder pane rules regardless of stylesheet load order.
+ */
+@media screen and (min-width: 783px) {
 
-.wicked-folders-toggle {
-    left: calc(var(--editor-one-sidebar-navigation-width, 240px) + var(--wicked-folders-sidebar-width) - 13px);
-    transition: left 0.3s ease-in-out;
-}
+    body.e-has-sidebar-navigation #wicked-folder-pane .wicked-resizer,
+    body.e-has-sidebar-navigation #wicked-folder-pane .wicked-content {
+        left: calc(var(--wicked-folders-sidebar-width) + var(--editor-one-sidebar-navigation-width));
+        transition: left 0.3s ease-in-out;
+    }
 
-.wicked-folders-toggle.expanded {
-    left: calc(var(--editor-one-sidebar-navigation-width, 240px) + var(--wicked-folders-sidebar-width) + var(--wicked-folders-tree-pane-width) - 20px);
-    transition: left 0.3s ease-in-out;
-}
+    body.e-has-sidebar-navigation .wicked-folders-toggle {
+        left: calc(var(--editor-one-sidebar-navigation-width, 240px) + var(--wicked-folders-sidebar-width) - 13px);
+        transition: left 0.3s ease-in-out;
+    }
 
-body.folded #wicked-folder-pane:not(.wicked-media-modal-folder-pane) .wicked-content,
-body.folded #wicked-folder-pane:not(.wicked-media-modal-folder-pane) .wicked-resizer,
-body.folded #wicked-folder-pane .wicked-navigating-mask {
-    left: calc(var(--editor-one-sidebar-navigation-width, 240px) + 36px);
+    body.e-has-sidebar-navigation .wicked-folders-toggle.expanded {
+        left: calc(var(--editor-one-sidebar-navigation-width, 240px) + var(--wicked-folders-sidebar-width) + var(--wicked-folders-tree-pane-width) - 20px);
+        transition: left 0.3s ease-in-out;
+    }
+
+    body.e-has-sidebar-navigation.folded #wicked-folder-pane:not(.wicked-media-modal-folder-pane) .wicked-content,
+    body.e-has-sidebar-navigation.folded #wicked-folder-pane:not(.wicked-media-modal-folder-pane) .wicked-resizer,
+    body.e-has-sidebar-navigation.folded #wicked-folder-pane .wicked-navigating-mask {
+        left: calc(var(--editor-one-sidebar-navigation-width, 240px) + 36px);
+    }
+
 }

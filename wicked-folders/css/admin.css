@@ -200,164 +200,6 @@ body.wicked-folders-page #screen-meta #adv-settings fieldset:first-of-type label
 }
 
 /**
- * Settings
- */
-.wicked-settings {
-    position: relative;
-}
-
-.wicked-settings:before {
-    position: absolute;
-    content: "";
-    top: 20px;
-    left: 70%;
-    width: 1px;
-    bottom: 20px;
-    background: #ccc;
-}
-
-.wicked-settings > .wicked-left {
-    float: left;
-    width: 70%;
-    box-sizing: border-box;
-    padding: 0 30px 0 0;
-}
-
-.wicked-settings > .wicked-right {
-    float: left;
-    width: 30%;
-    box-sizing: border-box;
-    padding: 20px 30px 0 30px;
-}
-
-.wicked-settings > .wicked-right h4 {
-    font-size: 16px;
-}
-
-.wicked-settings > .wicked-right hr {
-    margin: 30px 0;
-}
-
-.wicked-settings > .wicked-right img {
-    display: block;
-    margin: 0 auto;
-    max-width: 100%;
-    height: auto;
-}
-
-.wicked-settings .wicked-pro-screenshot {
-    border: solid 1px #ccc;
-}
-
-.wicked-settings > .wicked-right .wicked-logo {
-    max-width: 180px;
-    margin: 0 auto;
-}
-
-.wicked-settings > .wicked-right .wicked-logo img {
-    display: block;
-    margin: 0 auto 20px auto;
-    max-width: 100%;
-    height: auto;
-}
-
-.wicked-settings > .wicked-right .wicked-rate {
-    text-align: center;
-}
-
-.wicked-settings > .wicked-right .wicked-rate a {
-    text-decoration: none;
-}
-
-.wicked-settings > .wicked-right .wicked-rate .stars {
-    font-size: 16px;
-}
-
-.wicked-settings #wicked-folders-pro-license-key {
-    width: 300px;
-}
-
-.wicked-settings .colors ul {
-	margin: 0 0 10px 0;
-	padding: 0;
-	list-style-type: none;
-	display: flex;
-	gap: 10px;
-	flex-wrap: wrap;
-}
-
-.wicked-settings .colors li {
-	position: relative;
-}
-
-.wicked-settings .colors li button {
-	border: none;
-	background: #fff;
-	border-radius: 50%;
-	padding: 0;
-	cursor: pointer;
-	position: absolute;
-	top: 2px;
-	left: 2px;
-	width: 26px;
-	height: 26px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 12px;
-	opacity: 0;
-	transition: 0.25s ease;
-}
-
-.wicked-settings .colors li:hover button,
-.wicked-settings .colors li button:focus {
-	opacity: 1;
-}
-
-.wicked-settings .colors .color {
-	width: 30px;
-	height: 30px;
-	border-radius: 50%;
-}
-
-.wicked-settings .colors .clr-field {
-	float: left;
-	width: 0px;
-	height: 0px;
-	overflow: hidden;
-}
-
-body.settings_page_wicked_folders_settings #clr-picker .clr-close {
-	width: 100%;
-	margin: 0 20px 20px 20px;
-	background: #2271b1;
-	border-radius: 3px;
-	padding: 10px 20px;
-	height: auto;
-	font-size: 13px;	
-	line-height: 16px;
-}
-
-.wicked-folders-license-status {
-    margin: 5px 0 10px 0;
-}
-
-.wicked-folders-license-status > span:before {
-    display: inline-block;
-    content: "";
-    vertical-align: middle;
-    width: 8px;
-    height: 8px;
-    border-radius: 4px;
-    background: #46b450;
-    margin-right: 5px;
-}
-
-.wicked-folders-license-status > .wicked-folders-not-okay:before {
-    background: #dc3232;
-}
-
-/**
  * Folders taxonomy meta boxes
  */
 /*
@@ -1128,7 +970,11 @@ body.rtl .edit-attachment-frame .wicked-attachment-folders h2 {
 }
 
 .wp-list-table.plugins .active td.wicked_move {
-    border-left: solid 4px #00a0d2;
+    border-left: solid 4px var(--wp-admin-theme-color, #3858e9);
+}
+
+.wp-list-table.plugins .active td.wicked_move + td.check-column {
+    border-left: none;
 }
 
 /*******************************************************************************

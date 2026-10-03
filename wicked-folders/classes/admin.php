@@ -16,7 +16,6 @@ final class Admin {
     private function __construct() {
         add_action( 'admin_enqueue_scripts',				array( $this, 'admin_enqueue_scripts' ) );
         add_action( 'admin_enqueue_scripts',				array( $this, 'maybe_enqueue_scripts_for_settings_pages' ) );
-        add_action( 'admin_menu',							array( $this, 'add_settings_page_to_admin_menu' ), 10000 );
         add_action( 'pre_get_posts',						array( $this, 'pre_get_posts' ) );
         add_action( 'admin_notices', 						array( $this, 'admin_notices' ) );
         add_action( 'network_admin_notices', 				array( $this, 'admin_notices' ) );
@@ -214,21 +213,17 @@ final class Admin {
     }
 
     /**
-     * 'admin_enqueue_scripts' action. Enqueues styles for the settings pages.
+     * 'admin_enqueue_scripts' action. Enqueues styles for the folder collection
+     * policy and upload new media screens.
      */
     public function maybe_enqueue_scripts_for_settings_pages() {
         global $typenow;
 
         $screen = function_exists( 'get_current_screen' ) ? get_current_screen() : false;
 
-        if ( ( isset( $_GET['page'] ) && 'wicked_folders_settings' == $_GET['page'] ) || 'wf_collection_policy' == $typenow || ( false !== $screen && isset( $screen->base ) && isset( $screen->action ) && 'media' == $screen->base && 'add' == $screen->action ) ) {
-            $version = Wicked_Folders::plugin_version();
-
-			wp_enqueue_script( 'wicked-folders-coloris', plugin_dir_url( dirname( __FILE__ ) ) . 'js/coloris/coloris.min.js', array(), $version );
-
+        if ( 'wf_collection_policy' == $typenow || ( false !== $screen && isset( $screen->base ) && isset( $screen->action ) && 'media' == $screen->base && 'add' == $screen->action ) ) {
             // Registered in main admin_enqueue_scripts method
             wp_enqueue_style( 'wicked-folders-admin' );
-			wp_enqueue_style( 'wicked-folders-coloris', plugin_dir_url( dirname( __FILE__ ) ) . 'js/coloris/coloris.min.css', array(), $version );            
         }
     }
 
@@ -312,20 +307,6 @@ final class Admin {
     }
 
     /**
-     * WordPress 'admin_menu' action.
-     */
-    public function add_settings_page_to_admin_menu() {
-        add_submenu_page(
-            'options-general.php',
-            __( 'Wicked Folders Settings', 'wicked-folders' ),
-            __( 'Wicked Folders', 'wicked-folders' ),
-            'manage_options',
-            'wicked_folders_settings',
-            array( $this, 'settings_page' )
-        );
-    }
-
-    /**
      * Column headers for 'post' type.
      */
     public function manage_posts_columns( $columns ) {
@@ -371,93 +352,6 @@ final class Admin {
         if ( 'wicked_sort' == $column_name ) {
             echo '<a class="wicked-sort" href="#"><span class="dashicons dashicons-menu"></span></a>';
         }
-    }
-
-    public function settings_page() {
-        $active_tab 	= 'general';
-        $is_pro_active 	= is_plugin_active( 'wicked-folders-pro/wicked-folders-pro.php' );
-
-        if ( ! empty( $_GET['tab'] ) ) {
-            $active_tab = sanitize_text_field( $_GET['tab'] );
-        }
-
-        $tabs = array(
-            array(
-                'label' 	=> __( 'Settings', 'wicked-folders' ),
-                'callback' 	=> array( $this, 'settings_page_general' ),
-                'slug'		=> 'general',
-            ),
-        );
-
-        $tabs = apply_filters( 'wicked_folders_setting_tabs', $tabs );
-
-        include( dirname( dirname( __FILE__ ) ) . '/admin-templates/settings-page.php' );
-    }
-
-    public function settings_page_general() {
-        $is_pro_active 						= is_plugin_active( 'wicked-folders-pro/wicked-folders-pro.php' );
-        $is_gravity_forms_active 			= is_plugin_active( 'gravityforms/gravityforms.php' );
-        $enabled_posts_types 				= Wicked_Folders::post_types();
-        $dynamic_folders_enabled_posts_types= Wicked_Folders::dynamic_folder_post_types();
-        $license_key 						= get_option( 'wicked_folders_pro_license_key', false );
-        $license_data 						= get_site_option( 'wicked_folders_pro_license_data' );
-        $valid_license 						= isset( $license_data->license ) && 'valid' == $license_data->license ? true : false;
-        $show_folder_contents_in_tree_view 	= get_option( 'wicked_folders_show_folder_contents_in_tree_view', false );
-        $sync_upload_folder_dropdown 		= get_option( 'wicked_folders_sync_upload_folder_dropdown', false );
-        $include_children 					= get_option( 'wicked_folders_include_children', false );
-        $include_attachment_children 		= get_option( 'wicked_folders_include_attachment_children', false );
-        $show_hierarchy_in_folder_column 	= get_option( 'wicked_folders_show_hierarchy_in_folder_column', false );
-        $show_unassigned_folder 			= get_option( 'wicked_folders_show_unassigned_folder', true );
-        $show_folder_search 				= get_option( 'wicked_folders_show_folder_search', true );
-        $show_item_counts 					= get_option( 'wicked_folders_show_item_counts', true );
-        $show_breadcrumbs 					= get_option( 'wicked_folders_show_breadcrumbs', true );
-        $enable_ajax_nav 					= get_option( 'wicked_folders_enable_ajax_nav', true );
-        $enable_context_menus 				= get_option( 'wicked_folders_enable_context_menus', true );
-		$colors 							= get_option( 'wicked_folders_colors', array() );
-        $enable_lazy_dynamic_folders        = get_option( 'wicked_folders_enable_lazy_dynamic_folders', true );
-        $unsupported_types 					= array( 'shop_webhook', 'wf_collection_policy', 'nf_sub', 'wp_navigation' );
-        $attachment_post_type 				= get_post_type_object( 'attachment' );
-        $post_types 						= get_post_types( array(
-            'show_ui' => true,
-        ), 'objects' );
-        $pro_post_types 					= array(
-            'attachment',
-            'acf',
-            'shop_order',
-            'shop_coupon',
-            'tablepress_table',
-            'wpforms',
-        );
-
-        if ( null !== $wpforms_post_type = get_post_type_object( 'wpforms' ) ) {
-            $post_types['wpforms'] = $wpforms_post_type;
-        }
-
-        if ( $tablepress_post_type = get_post_type_object( 'tablepress_table' ) ) {
-            $tablepress_post_type->show_ui = true;
-
-            $post_types[] = $tablepress_post_type;
-        }
-
-        // Exclude unsupported types
-        foreach ( $unsupported_types as $type ) {
-            unset( $post_types[ $type ] );
-        }
-
-        if ( isset( $post_types['elementor_library'] ) ) {
-            $post_types['elementor_library']->label = __( 'Elementor Templates', 'wicked-folders' );
-        }
-
-        if ( $is_pro_active && ! is_multisite() ) {
-            // TODO: replace with filter
-            $license_status = Wicked_Folders\Pro\Plugin::get_license_status_text();
-        }
-
-        $post_types = apply_filters( 'wicked_folders_settings_post_types', $post_types );
-
-        usort( $post_types, array( $this, 'sort_post_types_compare' ) );
-
-        include( dirname( dirname( __FILE__ ) ) . '/admin-templates/settings-page-general.php' );
     }
 
     public function pre_get_posts( $query ) {
@@ -608,58 +502,6 @@ final class Admin {
         return $taxonomies;
     }
 
-    /**
-     * Handles saving plugin settings.
-     */
-    public function save_settings() {
-        $action = isset( $_REQUEST['action'] ) ? sanitize_key( $_REQUEST['action'] ) : false;
-
-        if ( 'wicked_folders_save_settings' == $action && wp_verify_nonce( $_REQUEST['nonce'], 'wicked_folders_save_settings' ) ) {
-            // Only handle save requests
-            if ( isset( $_POST['submit'] ) ) {
-                $post_types 						= isset( $_POST['post_type'] ) ? array_map( 'sanitize_key', $_POST['post_type'] ) : array();
-                $dynamic_folder_post_types 			= isset( $_POST['dynamic_folder_post_type'] ) ? array_map( 'sanitize_key', $_POST['dynamic_folder_post_type'] )  : array();
-                $show_folder_contents_in_tree_view 	= isset( $_POST['show_folder_contents_in_tree_view'] );
-                $sync_upload_folder_dropdown 		= isset( $_POST['sync_upload_folder_dropdown'] );
-                $include_children 					= isset( $_POST['include_children'] );
-                $include_attachment_children 		= isset( $_POST['include_attachment_children'] );
-                $show_hierarchy_in_folder_column 	= isset( $_POST['show_hierarchy_in_folder_column'] );
-                $show_unassigned_folder 			= isset( $_POST['show_unassigned_folder'] );
-                $show_folder_search 				= isset( $_POST['show_folder_search'] );
-                $show_item_counts 					= isset( $_POST['show_item_counts'] );
-                $show_breadcrumbs 					= isset( $_POST['show_breadcrumbs'] );
-                $enable_ajax_nav 					= isset( $_POST['enable_ajax_nav'] );
-                $enable_context_menus 				= isset( $_POST['enable_context_menus'] );
-				$colors 							= isset( $_POST['colors'] ) && is_array( $_POST['colors'] ) ? array_map( 'sanitize_text_field', $_POST['colors'] ) : array();
-                $enable_lazy_dynamic_folders        = isset( $_POST['enable_lazy_dynamic_folders'] );
-                
-                add_option( 'wicked_folders_show_breadcrumbs', $show_breadcrumbs );
-
-                // Note: booleans are cast to integers because passing false
-                // when the option doesn't already exist will result in
-                // WordPress not adding the option (and hence the option
-                // setting not getting saved)
-                update_option( 'wicked_folders_post_types', $post_types );
-                update_option( 'wicked_folders_dynamic_folder_post_types', $dynamic_folder_post_types );
-                update_option( 'wicked_folders_show_folder_contents_in_tree_view', ( int ) $show_folder_contents_in_tree_view );
-                update_option( 'wicked_folders_sync_upload_folder_dropdown', ( int ) $sync_upload_folder_dropdown );
-                update_option( 'wicked_folders_include_children', ( int ) $include_children );
-                update_option( 'wicked_folders_include_attachment_children', ( int ) $include_attachment_children );
-                update_option( 'wicked_folders_show_hierarchy_in_folder_column', ( int ) $show_hierarchy_in_folder_column );
-                update_option( 'wicked_folders_show_unassigned_folder', ( int ) $show_unassigned_folder );
-                update_option( 'wicked_folders_show_folder_search', ( int ) $show_folder_search );
-                update_option( 'wicked_folders_show_item_counts', ( int ) $show_item_counts );
-                update_option( 'wicked_folders_show_breadcrumbs', ( int ) $show_breadcrumbs );
-                update_option( 'wicked_folders_enable_ajax_nav', ( int ) $enable_ajax_nav );
-                update_option( 'wicked_folders_enable_context_menus', ( int ) $enable_context_menus );
-				update_option( 'wicked_folders_colors', $colors );
-                update_option( 'wicked_folders_enable_lazy_dynamic_folders', ( int ) $enable_lazy_dynamic_folders );
-                
-                $this->add_admin_notice( __( 'Your changes have been saved.', 'wicked-folders' ) );
-            }
-        }
-    }
-
     public function add_settings_to_plugin_action_links( $links ) {
         $settings_link = '<a href="' . esc_url( menu_page_url( 'wicked_folders_settings', 0 ) ) . '">' . __( 'Settings', 'wicked-folders' ) . '</a>';
 
@@ -774,9 +616,5 @@ final class Admin {
         }
 
         return false;
-    }
-
-    private function sort_post_types_compare( $a, $b ) {
-        return strcmp( $a->label, $b->label );
     }
 }

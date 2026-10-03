@@ -32,12 +32,23 @@ class Screen_State_API extends REST_API {
 
     public function update_item( $request ) {
         try {
-            $json 		= $request->get_json_params();
-            $screen_id 	= $json['screenId'];
-            $user_id 	= $json['userId'];
+            $json 		= ( array ) $request->get_json_params();
+            $screen_id 	= isset( $json['screenId'] ) ? $json['screenId'] : false;
+
+            // Screen state is stored in user meta so it must always be saved
+            // for the user making the request; the user ID sent in the request
+            // body is ignored to prevent one user from overwriting another
+            // user's screen state
+            $user_id 	= get_current_user_id();
             $state 		= new Screen_State( $screen_id, $user_id );
 
             $state->from_json( $json );
+
+            // from_json applies the request's screenId and userId, so restore
+            // the values the state was loaded with
+            $state->screen_id 	= $screen_id;
+            $state->user_id 	= $user_id;
+
             $state->save();
 
             return $state;

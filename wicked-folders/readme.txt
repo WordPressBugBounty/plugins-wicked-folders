@@ -2,8 +2,8 @@
 Contributors: wickedplugins
 Tags: folders, organization, page folders, media library folders, media library categories
 Requires at least: 4.6
-Tested up to: 7.0
-Stable tag: 4.1.3
+Tested up to: 7.1
+Stable tag: 4.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -209,6 +209,14 @@ The folder toggle arrow is greyed out when a folder doesn't have any child folde
 6. Pro feature: folder permissions
 
 == Changelog ==
+
+= 4.2.0 (October 2, 2026) =
+* New: redesigned settings screen
+* New: download media folders (Wicked Folders Pro)
+* Fix: security issue allowing users with contributor role and above to assign items they can't edit to folders using the REST API
+* Fix: security issue allowing users with contributor role and above to overwrite another user's folder pane state using the REST API
+* Fix: folder permissions not being applied when unassigning items from folders
+* Fix: security issue allowing SQL injection via the folder filter on the Users screen (Wicked Folders Pro)
 
 = 4.1.3 (June 23, 2026) =
 * Fix: conflict causing some Divi 5 screens to not load

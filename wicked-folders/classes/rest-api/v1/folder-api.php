@@ -526,12 +526,43 @@ class Folder_API extends REST_API {
         }
     }
 
+    /**
+     * Determines whether the current user is allowed to assign the specified
+     * item to (or remove it from) a folder.
+     *
+     * Stub post types (plugins, users, forms, etc.) added by the pro plugin
+     * don't have records in the posts table, so there's no post to check
+     * capabilities against. In that case we fall back to the endpoint's own
+     * 'edit_posts' permission check, which has already run.
+     *
+     * @param int $object_id
+     *  The ID of the item being assigned.
+     *
+     * @param string $post_type
+     *  The post type the item is expected to belong to.
+     *
+     * @return bool
+     *  True if the item may be assigned, false if not.
+     */
+    protected function can_assign_item( $object_id, $post_type ) {
+        $post = get_post( $object_id );
+
+        // Only enforce the post capability when the ID actually resolves to a
+        // post of the requested type; stub post type IDs can collide with post
+        // IDs so we can't treat a mismatch as a real post
+        if ( $post && $post->post_type == $post_type ) {
+            return current_user_can( 'edit_post', $object_id );
+        }
+
+        return true;
+    }
+
     public function assign_items( $request ) {
         try {
             $to_folder_id 			= absint( $request->get_param( 'id' ) );
             $from_folder_id 		= absint( $request->get_param( 'from_folder_id' ) );
             $post_type 				= $request->get_param( 'post_type' );
-            $post_ids 				= $request->get_param( 'post_ids' );
+            $post_ids 				= ( array ) $request->get_param( 'post_ids' );
             $copy 					= $request->get_param( 'copy' );
             $sort_mode 				= $request->get_param( 'sort_mode' );
             $include_item_counts 	= $request->get_param( 'include_item_counts' );
@@ -541,7 +572,12 @@ class Folder_API extends REST_API {
             if ( $copy ) $from_folder_id = false;
 
             foreach ( $post_ids as $id ) {
-                Wicked_Folders::move_object( 'post', ( int ) $id, $to_folder_id, $from_folder_id );
+                $id = ( int ) $id;
+
+                // Skip items the current user isn't allowed to edit
+                if ( ! $this->can_assign_item( $id, $post_type ) ) continue;
+
+                Wicked_Folders::move_object( 'post', $id, $to_folder_id, $from_folder_id );
             }
 
             // Folders are used in response to update item counts	
@@ -566,17 +602,24 @@ class Folder_API extends REST_API {
     public function unassign_folders( $request ) {
         try {
             $post_type 	= $request->get_param( 'post_type' );
-            $post_ids 	= $request->get_param( 'post_ids' );
+            $post_ids 	= ( array ) $request->get_param( 'post_ids' );
             $include_item_counts 	= $request->get_param( 'include_item_counts' );
             $sort_mode 	= $request->get_param( 'sort_mode' );
             $taxonomy 	= Wicked_Folders::get_tax_name( $post_type );
             $user_id 	= get_current_user_id();
 
             foreach ( $post_ids as $id ) {
+                $id = ( int ) $id;
+
+                // Skip items the current user isn't allowed to edit
+                if ( ! $this->can_assign_item( $id, $post_type ) ) continue;
+
                 $folder_ids = wp_get_object_terms( $id, $taxonomy, array( 'fields' => 'ids' ) );
 
+                if ( is_wp_error( $folder_ids ) ) continue;
+
                 for ( $i = count( $folder_ids ) - 1; $i > -1; $i-- ) {
-                    $allowed = apply_filters( 'can_assign_items_to_folder', true, $user_id, $folder_ids[ $i ], $taxonomy );
+                    $allowed = apply_filters( 'wicked_folders_can_assign_items_to_folder', true, $user_id, $folder_ids[ $i ], $taxonomy );
 
                     // Only unassign folders from the post that the user has permission to assign items to/from
                     if ( $allowed ) {
@@ -584,7 +627,7 @@ class Folder_API extends REST_API {
                     }
                 }
 
-                $update_terms_result = wp_set_object_terms( ( int ) $id, $folder_ids, $taxonomy );
+                $update_terms_result = wp_set_object_terms( $id, $folder_ids, $taxonomy );
             }
 
             // Folders are used in response to update item counts
